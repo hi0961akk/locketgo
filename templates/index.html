@@ -1,1 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>Locket Gold Unlocker</title>
+  <!-- SweetAlert2 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
+    body {
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+      background: #0b0b0f;
+      color: #eaeaea;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 1.5rem;
+      margin: 0;
+    }
+
+    .main-card {
+      max-width: 460px;
+      width: 100%;
+      background: rgba(20, 20, 28, 0.9);
+      border: 1px solid rgba(255, 215, 0, 0.18);
+      border-radius: 2rem;
+      padding: 2rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      backdrop-filter: blur(12px);
+      background: #18181e;
+      box-shadow: 0 20px 35px rgba(0,0,0,0.6);
+    }
+
+    .header {
+      text-align: center;
+    }
+
+    .app-icon {
+      width: 70px;
+      height: 70px;
+      border-radius: 20px;
+      margin-bottom: 0.75rem;
+      background: #1e1e24;
+      padding: 4px;
+      border: 1px solid rgba(255,215,0,0.3);
+    }
+
+    h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #f9d423, #e6b800);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.25rem;
+    }
+
+    .subtitle {
+      color: #b0b0b0;
+      font-size: 0.95rem;
+      letter-spacing: 0.3px;
+    }
+
+    .queue-box {
+      background: rgba(255,215,0,0.08);
+      border-radius: 1rem;
+      padding: 1rem;
+      display: flex;
+      justify-content: space-around;
+      text-align: center;
+      border: 1px solid rgba(255,215,0,0.2);
+      margin-top: 0.25rem;
+    }
+
+    .queue-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      color: #9d9d9d;
+      letter-spacing: 0.8px;
+      margin-bottom: 0.2rem;
+    }
+
+    .queue-number {
+      font-weight: 700;
+      font-size: 1.3rem;
+      color: #fbbf24;
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #c0c0c0;
+    }
+
+    input {
+      background: #26262e;
+      border: 1px solid #3a3a44;
+      border-radius: 1rem;
+      padding: 1rem;
+      font-size: 1rem;
+      color: white;
+      outline: none;
+      transition: 0.2s;
+    }
+
+    input:focus {
+      border-color: #fbbf24;
+      box-shadow: 0 0 0 3px rgba(251,191,36,0.2);
+    }
+
+    button {
+      background: linear-gradient(135deg, #f5c542, #dbaa1a);
+      border: none;
+      border-radius: 1rem;
+      padding: 1rem;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: #0a0a0a;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      transition: 0.2s;
+      letter-spacing: 0.3px;
+    }
+
+    button:active {
+      transform: scale(0.97);
+      background: #c6941a;
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      transform: none;
+      pointer-events: none;
+    }
+
+    .loader {
+      display: none;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(0,0,0,0.2);
+      border-top: 3px solid #0a0a0a;
+      border-radius: 50%;
+      animation: spin 0.9s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .tabs {
+      display: flex;
+      background: #20202a;
+      border-radius: 1rem;
+      padding: 0.3rem;
+      gap: 0.3rem;
+    }
+
+    .tab {
+      flex: 1;
+      text-align: center;
+      padding: 0.7rem 0.5rem;
+      border-radius: 0.8rem;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      color: #999;
+      transition: 0.2s;
+      background: transparent;
+      border: none;
+    }
+
+    .tab.active {
+      background: #fbbf24;
+      color: #0a0a0a;
+    }
+
+    .platform-content {
+      display: none;
+      font-size: 0.9rem;
+      color: #cccccc;
+      line-height: 1.6;
+      margin-top: 0.5rem;
+    }
+
+    .platform-content.active {
+      display: block;
+    }
+
+    ol {
+      padding-left: 1.3rem;
+      margin: 0.5rem 0 0.8rem;
+    }
+
+    li {
+      margin-bottom: 0.5rem;
+    }
+
+    .dns-box {
+      background: #1f1f28;
+      border: 1px solid #fbbf24;
+      padding: 0.7rem;
+      border-radius: 0.7rem;
+      font-family: monospace;
+      text-align: center;
+      color: #fbbf24;
+      margin: 0.8rem 0;
+      word-break: break-all;
+    }
+
+    .action-row {
+      display: flex;
+      gap: 0.6rem;
+      margin-top: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .secondary-btn {
+      background: #2a2a34;
+      color: white;
+      padding: 0.7rem 1.2rem;
+      border-radius: 0.8rem;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      border: 1px solid #3e3e4a;
+      cursor: pointer;
+    }
+
+    .note-box {
+      background: rgba(255,215,0,0.06);
+      border-radius: 1rem;
+      padding: 1.2rem;
+      border: 1px solid rgba(255,215,0,0.2);
+      font-size: 0.85rem;
+      color: #b9b9b9;
+      margin-top: 0.5rem;
+    }
+
+    .note-box h3 {
+      color: #fbbf24;
+      margin-bottom: 0.5rem;
+      font-size: 0.95rem;
+    }
+
+    footer {
+      margin-top: 2rem;
+      color: #808080;
+      font-size: 0.8rem;
+      text-align: center;
+    }
+
+    footer a {
+      color: #fbbf24;
+      text-decoration: none;
+    }
+
+    hr {
+      border-color: rgba(255,215,0,0.15);
+      margin: 0.5rem 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="main-card">
+    <div class="header">
+      <img src="https://play-lh.googleusercontent.com/eRZLg00mAQGayCrFjDBklPIpW3qFHcmUs8PUQA4z7hVe-cDKMcRqecVHONAIexJGJZM" alt="Locket" class="app-icon">
+      <h1>Locket Gold</h1>
+      <p class="subtitle">Unlock premium features instantly</p>
+    </div>
+
+    <!-- Global queue status (simplified) -->
+    <div class="queue-box" id="globalQueueBox">
+      <div>
+        <div class="queue-label">Waiting</div>
+        <div class="queue-number" id="globalTotal">-</div>
+      </div>
+      <div>
+        <div class="queue-label">Est. Time</div>
+        <div class="queue-number" id="globalTime">-</div>
+      </div>
+    </div>
+
+    <div class="input-group">
+      <label for="username">Target Username</label>
+      <input type="text" id="username" placeholder="Enter Locket username" autocomplete="off">
+    </div>
+
+    <button id="submitBtn" onclick="checkUserInfo()">
+      <span id="btnText">Check User Info</span>
+      <div class="loader" id="loader"></div>
+    </button>
+
+    <!-- Instructions with platform tabs -->
+    <div style="margin-top: 0.25rem;">
+      <div class="tabs">
+        <button class="tab active" onclick="switchPlatform('ios')">🍎 iOS</button>
+        <button class="tab" onclick="switchPlatform('android')">🤖 Android</button>
+      </div>
+
+      <div id="ios-content" class="platform-content active">
+        <ol>
+          <li>Open Locket and find your username in settings.</li>
+          <li>Enter username and tap <strong>Check User Info</strong>.</li>
+          <li>Confirm and proceed to unlock Gold.</li>
+          <li>After activation, install configuration profile to prevent revoke.</li>
+          <li>Restart Locket app.</li>
+        </ol>
+        <div class="action-row">
+          <a href="/static/locket.mobileconfig" class="secondary-btn" target="_blank">
+            ⬇️ Download Profile
+          </a>
+          <button class="secondary-btn" onclick="showTutorial()">
+            ▶️ Watch Tutorial
+          </button>
+        </div>
+      </div>
+
+      <div id="android-content" class="platform-content">
+        <ol>
+          <li>Open Locket and find your username.</li>
+          <li>Check user info, then continue.</li>
+          <li>Go to <strong>Settings → Network & Internet → Private DNS</strong>.</li>
+          <li>Select <strong>Private DNS provider hostname</strong>.</li>
+          <li>Enter the hostname below and Save.</li>
+          <li>Restart Locket.</li>
+        </ol>
+        <div class="dns-box">62d63b.dns.nextdns.io</div>
+      </div>
+    </div>
+
+    <div class="note-box">
+      <h3>⚠️ Important</h3>
+      <ul style="padding-left: 1.2rem;">
+        <li>Works on <strong>iOS & Android</strong>.</li>
+        <li>Gold remains until you <strong>log out</strong>.</li>
+        <li>For <strong>educational purposes only</strong>.</li>
+      </ul>
+    </div>
+  </div>
+
+  <footer>
+    <p>Created by <a href="https://maihuybao.dev" target="_blank">Mai Huy Bao</a> · 
+    <a href="https://github.com/maihuybao/LocketGoldUnlockerWithUsername" target="_blank">GitHub</a></p>
+  </footer>
+
+  <!-- SweetAlert2 JS -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script>
+    (function() {
+      // ---------- SIMPLE PLATFORM SWITCH ----------
+      window.switchPlatform = function(platform) {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        event.target.classList.add('active');
+        document.querySelectorAll('.platform-content').forEach(c => c.classList.remove('active'));
+        document.getElementById(platform + '-content').classList.add('active');
+      };
+
+      window.showTutorial = function() {
+        Swal.fire({
+          title: 'Install Tutorial',
+          html: `<iframe src="https://www.youtube.com/embed/DVEkn_AZd4w?autoplay=1" 
+                 style="width:100%; aspect-ratio:9/16; border:0; border-radius:1rem;" 
+                 allowfullscreen></iframe>`,
+          background: '#1e1e26',
+          color: '#fff',
+          showConfirmButton: false,
+          showCloseButton: true,
+          customClass: { popup: 'glass-popup' }
+        });
+      };
+
+      // ---------- GLOBAL STATE ----------
+      let currentUserData = null;
+      let pollTimer = null;
+      let countdownInterval = null;
+      let currentEstimate = 0;
+      let lastPosition = null;
+
+      const usernameInput = document.getElementById('username');
+      const submitBtn = document.getElementById('submitBtn');
+      const loader = document.getElementById('loader');
+      const btnText = document.getElementById('btnText');
+
+      // ---------- API CALL: CHECK USER ----------
+      window.checkUserInfo = async function() {
+        const username = usernameInput.value.trim();
+        if (!username) {
+          Swal.fire({ icon: 'warning', title: 'Missing username', text: 'Enter Locket username', background: '#1e1e26', color: '#fff' });
+          return;
+        }
+
+        setLoading(true);
+        try {
+          const res = await fetch('/api/get-user-info', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username })
+          });
+          const data = await res.json();
+
+          if (res.ok && data.success) {
+            currentUserData = data.data;
+            showUserConfirm(data.data);
+          } else {
+            Swal.fire({ icon: 'error', title: 'Not found', text: data.msg || 'User not found', background: '#1e1e26', color: '#fff' });
+          }
+        } catch (err) {
+          Swal.fire({ icon: 'error', title: 'Network error', text: 'Check connection', background: '#1e1e26', color: '#fff' });
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      function setLoading(loading) {
+        submitBtn.disabled = loading;
+        loader.style.display = loading ? 'block' : 'none';
+        btnText.style.display = loading ? 'none' : 'inline';
+      }
+
+      // ---------- CONFIRM USER & START RESTORE ----------
+      function showUserConfirm(user) {
+        const fullName = [user.first_name, user.last_name].filter(Boolean).join(' ') || 'No name';
+        const avatar = user.profile_picture_url || 'https://play-lh.googleusercontent.com/eRZLg00mAQGayCrFjDBklPIpW3qFHcmUs8PUQA4z7hVe-cDKMcRqecVHONAIexJGJZM';
+
+        Swal.fire({
+          title: 'Confirm User',
+          html: `
+            <div style="display:flex; align-items:center; gap:1rem; margin-bottom:1rem;">
+              <img src="${avatar}" style="width:55px; height:55px; border-radius:50%; border:2px solid #fbbf24;" onerror="this.src='https://play-lh.googleusercontent.com/eRZLg00mAQGayCrFjDBklPIpW3qFHcmUs8PUQA4z7hVe-cDKMcRqecVHONAIexJGJZM'">
+              <div>
+                <div style="font-weight:bold;">${fullName}</div>
+                <div style="color:#aaa;">@${user.username}</div>
+              </div>
+            </div>
+            <div style="font-size:0.8rem; color:#888;">UID: ${user.uid}</div>
+            <p style="margin-top:1rem;">Unlock Gold for this user?</p>
+          `,
+          background: '#1e1e26',
+          color: '#fff',
+          showCancelButton: true,
+          confirmButtonText: 'Continue',
+          cancelButtonText: 'Cancel',
+          customClass: { confirmButton: 'swal-gold-btn' }
+        }).then((result) => {
+          if (result.isConfirmed) {
+            restorePurchase(user.username);
+          }
+        });
+      }
+
+      async function restorePurchase(username) {
+        try {
+          const res = await fetch('/api/restore', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username })
+          });
+          const data = await res.json();
+          if (res.ok && data.success) {
+            startQueuePolling(data.client_id, username);
+          } else {
+            Swal.fire({ icon: 'error', title: 'Error', text: data.msg || 'Failed to join queue', background: '#1e1e26', color: '#fff' });
+          }
+        } catch (e) {
+          Swal.fire({ icon: 'error', title: 'Connection error', background: '#1e1e26', color: '#fff' });
+        }
+      }
+
+      // ---------- QUEUE POLLING (SIMPLIFIED) ----------
+      function startQueuePolling(clientId, username) {
+        clearTimers();
+        lastPosition = null;
+        currentEstimate = 0;
+
+        Swal.fire({
+          title: 'Queue Status',
+          html: `
+            <div style="text-align:center;">
+              <div id="queuePosition" style="font-size:2.5rem; font-weight:bold; color:#fbbf24;">-</div>
+              <div style="display:flex; justify-content:space-around; margin:1rem 0;">
+                <div><span style="color:#aaa;">Waiting</span><br><span id="queueTotal">-</span></div>
+                <div><span style="color:#aaa;">Est. Time</span><br><span id="queueTime">-</span></div>
+              </div>
+              <div id="queueMsg" style="color:#aaa;">Joining queue...</div>
+            </div>
+          `,
+          background: '#1e1e26',
+          color: '#fff',
+          showConfirmButton: false,
+          allowOutsideClick: false,
+          allowEscapeKey: false
+        });
+
+        const poll = async () => {
+          try {
+            const res = await fetch('/api/queue/status', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ client_id: clientId })
+            });
+            const data = await res.json();
+            if (!res.ok || !data.success) {
+              clearTimers();
+              Swal.fire({ icon: 'error', title: 'Status error', background: '#1e1e26', color: '#fff' });
+              resetGlobalUI();
+              return;
+            }
+
+            if (data.status === 'completed') {
+              clearTimers();
+              Swal.fire({ icon: 'success', title: 'Success!', text: data.result?.msg || 'Unlocked', background: '#1e1e26', color: '#fff' });
+              resetGlobalUI();
+            } else if (data.status === 'error') {
+              clearTimers();
+              Swal.fire({ icon: 'error', title: 'Failed', text: data.error || 'Error', background: '#1e1e26', color: '#fff' });
+              resetGlobalUI();
+            } else {
+              updateQueueDisplay(data);
+              pollTimer = setTimeout(poll, 1200);
+            }
+          } catch (e) {
+            pollTimer = setTimeout(poll, 2000);
+          }
+        };
+
+        poll();
+      }
+
+      function updateQueueDisplay(data) {
+        const posEl = document.getElementById('queuePosition');
+        const totalEl = document.getElementById('queueTotal');
+        const timeEl = document.getElementById('queueTime');
+        const msgEl = document.getElementById('queueMsg');
+        if (!posEl) return;
+
+        if (data.status === 'processing') {
+          posEl.textContent = '⚙️';
+          if (msgEl) msgEl.textContent = 'Processing...';
+        } else {
+          posEl.textContent = data.position === 0 ? 'Next' : `#${data.position}`;
+          if (msgEl) msgEl.textContent = `Position ${data.position} of ${data.total_queue}`;
+        }
+
+        if (totalEl) totalEl.textContent = data.total_queue;
+        updateGlobalQueueNumbers(data.total_queue);
+
+        if (lastPosition !== data.position) {
+          currentEstimate = data.estimated_time;
+          lastPosition = data.position;
+          restartCountdown();
+        }
+      }
+
+      function restartCountdown() {
+        clearInterval(countdownInterval);
+        const timeEl = document.getElementById('queueTime');
+        const globalTimeEl = document.getElementById('globalTime');
+        const tick = () => {
+          if (currentEstimate > 0) {
+            currentEstimate--;
+            const txt = formatTime(currentEstimate);
+            if (timeEl) timeEl.textContent = txt;
+            if (globalTimeEl) globalTimeEl.textContent = txt;
+          } else {
+            if (timeEl) timeEl.textContent = 'Soon';
+            if (globalTimeEl) globalTimeEl.textContent = 'Soon';
+          }
+        };
+        tick();
+        countdownInterval = setInterval(tick, 1000);
+      }
+
+      function formatTime(sec) {
+        if (sec <= 0) return 'Soon';
+        if (sec < 60) return `${sec}s`;
+        const m = Math.floor(sec / 60);
+        const s = sec % 60;
+        return `${m}m ${s}s`;
+      }
+
+      function clearTimers() {
+        if (pollTimer) clearTimeout(pollTimer);
+        if (countdownInterval) clearInterval(countdownInterval);
+        pollTimer = null;
+        countdownInterval = null;
+      }
+
+      function updateGlobalQueueNumbers(total) {
+        document.getElementById('globalTotal').textContent = total ?? '-';
+      }
+
+      function resetGlobalUI() {
+        document.getElementById('globalTotal').textContent = '0';
+        document.getElementById('globalTime').textContent = 'Soon';
+      }
+
+      async function fetchGlobalStatus() {
+        try {
+          const res = await fetch('/api/queue/global-status');
+          const data = await res.json();
+          if (data.success) {
+            document.getElementById('globalTotal').textContent = data.total_queue;
+            const est = data.estimated_time || 0;
+            document.getElementById('globalTime').textContent = formatTime(est);
+          }
+        } catch (e) {}
+      }
+
+      // Enter key support
+      usernameInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          checkUserInfo();
+        }
+      });
+
+      // Initial fetch & interval
+      fetchGlobalStatus();
+      setInterval(fetchGlobalStatus, 6000);
+      resetGlobalUI();
+    })();
+  </script>
+  <style>
+    /* minimal swal overrides */
+    .swal2-popup { border-radius: 1.5rem !important; }
+    .swal-gold-btn { background: linear-gradient(135deg,#f5c542,#dbaa1a) !important; color: #000 !important; font-weight: bold; border: none !important; }
+  </style>
+</body>
+</html>
