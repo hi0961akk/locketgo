@@ -371,7 +371,7 @@ class QueueManager:
                         completed_at = data.get("completed_at")
                         if completed_at:
                             age = (current_time - completed_at).total_seconds()
-                            if age > 600:  # 10 minutes
+                            if age > 600:  # 10 minutes (increased from 5)
                                 to_remove.append(client_id)
 
                 for client_id in to_remove:
@@ -437,9 +437,6 @@ class QueueManager:
             gold_entitlement = entitlements.get("Gold", {})
 
             if gold_entitlement.get("product_identifier") in subscription_ids:
-                # Success log (Telegram notification removed)
-                print(f"✅ Successfully unlocked Gold for {username}")
-
                 with self.lock:
                     if client_id in self.client_requests:
                         self.client_requests[client_id]["status"] = "completed"
